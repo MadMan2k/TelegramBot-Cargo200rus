@@ -22,7 +22,7 @@ public class SendMessageService {
     }
 
     /**
-     * @param message
+     * @param message input message
      */
     public void lossesCounter(Message message) {
         boolean detailedReport = message.getText().equals("DETAILED");
