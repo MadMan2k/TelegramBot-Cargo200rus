@@ -46,7 +46,7 @@ public class SendMessageService {
                 responseMessage = personnelLossesString + equipmentLossesString;
                 break;
             default:
-                responseMessage = "Please choose the report type using the button below: simple or detailed";
+                responseMessage = "Please tap one of the button below to choose simple or detailed report";
                 break;
         }
 
