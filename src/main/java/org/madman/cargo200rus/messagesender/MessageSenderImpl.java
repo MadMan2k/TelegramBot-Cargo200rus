@@ -26,7 +26,7 @@ public class MessageSenderImpl implements MessageSender {
      * @param cargo200rusBotObject
      */
     @Autowired
-    public void setRussianLossesBot(Cargo200rusBot cargo200rusBotObject) {
+    public void setCargo200rusBot(Cargo200rusBot cargo200rusBotObject) {
         this.cargo200rusBot = cargo200rusBotObject;
     }
 }
