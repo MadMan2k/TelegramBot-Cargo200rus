@@ -45,15 +45,16 @@ public class SendMessageService {
                 personnelLossesString = personnelLosses.getPersonnelLosses(detailedReport);
                 equipmentLossesString = equipmentLosses.getEquipmentLosses(detailedReport);
                 responseMessage = personnelLossesString + equipmentLossesString;
+
+                responseMessage = responseMessage + "<i>Data sources:\n"
+                        + "<a href=\"https://www.zsu.gov.ua/en\">Armed Forces of Ukraine</a>\n"
+                        + "<a href=\"https://www.mil.gov.ua/en/\">Ministry of Defence of Ukraine</a></i>";
+
                 break;
             default:
                 responseMessage = "Please tap one of the button below to choose simple or detailed report";
                 break;
         }
-
-        responseMessage = responseMessage + "<i>Main data sources:\n"
-                + "<a href=\"https://www.zsu.gov.ua/en\">Armed Forces of Ukraine</a>\n"
-                + "<a href=\"https://www.mil.gov.ua/en/\">Ministry of Defence of Ukraine</a></i>";
 
         SendMessage outputMessage = SendMessage.builder()
                 .text(responseMessage)
