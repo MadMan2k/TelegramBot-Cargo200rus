@@ -1,5 +1,6 @@
 package org.madman.cargo200rus;
 
+import lombok.SneakyThrows;
 import org.madman.cargo200rus.services.SendMessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -36,6 +37,7 @@ public class Cargo200rusBot extends TelegramLongPollingBot {
     /**
      * @param update
      */
+    @SneakyThrows
     @Override
     public void onUpdateReceived(Update update) {
         if (update.hasMessage()) {

@@ -40,12 +40,12 @@ public class EquipmentLosses {
         for (Map.Entry<String, Object> entry : totalEquipmentLosses.entrySet()) {
             if (entry.getValue() instanceof Integer && !entry.getKey().equals("day")) {
                 if (entry.getKey().equals("MRL")) {
-                    equipmentLosses.append("Multiple rocket launcher: ");
+                    equipmentLosses.append("<b>Multiple rocket launcher:</b> ");
                 } else if (entry.getKey().equals("APC")) {
-                    equipmentLosses.append("Armored personnel carrier: ");
+                    equipmentLosses.append("<b>Armored personnel carrier:</b> ");
                 } else {
-                    equipmentLosses.append(entry.getKey().substring(0, 1).toUpperCase(Locale.ROOT)
-                            + entry.getKey().substring(1)).append(": ");
+                    equipmentLosses.append("<b>").append(entry.getKey().substring(0, 1).toUpperCase(Locale.ROOT)
+                            + entry.getKey().substring(1)).append(": ").append("</b>");
                 }
 
                 int totalArticleLosses = Integer.parseInt(entry.getValue().toString());
@@ -83,6 +83,8 @@ public class EquipmentLosses {
 
             }
         }
+
+        equipmentLosses.append("\n");
 
         return equipmentLosses.toString();
 

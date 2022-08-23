@@ -76,10 +76,10 @@ public class PersonnelLosses {
 
 
         StringBuilder personnelLosses = new StringBuilder();
-        personnelLosses.append("Date: ").append(dataDate).append("\n")
+        personnelLosses.append("<b>").append("Date: ").append(dataDate).append("\n")
                 .append("Day of russian invasion of Ukraine: ").append(dayOfWar).append("\n").append("\n")
                 .append("Russian looses from 24/02/2022 :").append("\n").append("\n")
-                .append("Personnel: ").append(totalPersonnelLosses);
+                .append("Personnel: ").append("</b>").append(totalPersonnelLosses);
 
         if (detailedReport) {
             personnelLosses.append("\n").append("+")
