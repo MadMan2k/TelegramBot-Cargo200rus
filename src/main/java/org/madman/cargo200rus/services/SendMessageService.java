@@ -38,7 +38,7 @@ public class SendMessageService {
         List<String> keyboardButtons = new ArrayList<>();
         keyboardButtons.add("SIMPLE");
         keyboardButtons.add("DETAILED");
-        keyboardButtons.add("INFO");
+//        keyboardButtons.add("INFO");
         ReplyKeyboardMarkup markup = KeyboardMaker.make(keyboardButtons);
 
         PersonnelLosses personnelLosses = new PersonnelLosses();
