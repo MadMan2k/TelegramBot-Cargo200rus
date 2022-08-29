@@ -1,11 +1,14 @@
 package org.madman.cargo200rus.services;
 
+import org.apache.commons.io.FileUtils;
 import org.madman.cargo200rus.messagesender.MessageSender;
 import org.madman.cargo200rus.pojo.EquipmentLosses;
 import org.madman.cargo200rus.pojo.KeyboardMaker;
 import org.madman.cargo200rus.pojo.PersonnelLosses;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.util.ResourceUtils;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
@@ -13,8 +16,13 @@ import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.BufferUnderflowException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +46,7 @@ public class SendMessageService {
         List<String> keyboardButtons = new ArrayList<>();
         keyboardButtons.add("SIMPLE");
         keyboardButtons.add("DETAILED");
-//        keyboardButtons.add("INFO");
+        keyboardButtons.add("INFO");
         ReplyKeyboardMarkup markup = KeyboardMaker.make(keyboardButtons);
 
         PersonnelLosses personnelLosses = new PersonnelLosses();
@@ -62,14 +70,28 @@ public class SendMessageService {
                 break;
 
             case "INFO":
+//                try {
+//                    image = ResourceUtils.getFile("classpath:" + IMAGE_PATH);
+//                } catch (FileNotFoundException e) {
+//                    e.printStackTrace();
+//                }
+//                if (image != null) {
+//                    setAttributesAndCallSendPhoto(message.getChatId(), markup, image);
+//                }
+
+                ClassPathResource cpr = new ClassPathResource(IMAGE_PATH);
+
+                InputStream inputStream = null;
                 try {
-                    image = ResourceUtils.getFile("classpath:" + IMAGE_PATH);
-                } catch (FileNotFoundException e) {
+                    inputStream = cpr.getInputStream();
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
-                if (image != null) {
-                    setAttributesAndCallSendPhoto(message.getChatId(), markup, image);
-                }
+
+                testMethod(message.getChatId(), markup, inputStream);
+
+
+
                 break;
 
             default:
@@ -77,6 +99,15 @@ public class SendMessageService {
                 setAttributesAndCallSendMessage(message.getChatId(), markup, textMessage);
                 break;
         }
+    }
+
+    private void testMethod(long chatId, ReplyKeyboardMarkup markup, InputStream inputStream) {
+        SendPhoto sendPhoto = SendPhoto.builder()
+                .photo(new InputFile(inputStream, "inputStreamImage"))
+                .chatId(chatId)
+                .replyMarkup(markup)
+                .build();
+        messageSender.sendPhoto(sendPhoto);
     }
 
     private void setAttributesAndCallSendPhoto(long chatId, ReplyKeyboardMarkup markup, File image) {
