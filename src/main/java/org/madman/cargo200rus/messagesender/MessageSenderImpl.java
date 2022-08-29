@@ -4,6 +4,7 @@ import org.madman.cargo200rus.Cargo200rusBot;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 @Service
@@ -17,6 +18,18 @@ public class MessageSenderImpl implements MessageSender {
     public void sendMessage(SendMessage sendMessage) {
         try {
             cargo200rusBot.execute(sendMessage);
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * @param sendPhoto
+     */
+    @Override
+    public void sendPhoto(SendPhoto sendPhoto) {
+        try {
+            cargo200rusBot.execute(sendPhoto);
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }

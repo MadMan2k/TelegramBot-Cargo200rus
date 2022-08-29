@@ -42,7 +42,7 @@ public class EquipmentLosses {
                 if (entry.getKey().equals("MRL")) {
                     equipmentLosses.append("<b>Multiple rocket launcher:</b> ");
                 } else if (entry.getKey().equals("APC")) {
-                    equipmentLosses.append("<b>Armored personnel carrier:</b> ");
+                    equipmentLosses.append("<b>Armoured fighting vehicle:</b> ");
                 } else {
                     equipmentLosses.append("<b>").append(entry.getKey().substring(0, 1).toUpperCase(Locale.ROOT)
                             + entry.getKey().substring(1)).append(": ").append("</b>");
