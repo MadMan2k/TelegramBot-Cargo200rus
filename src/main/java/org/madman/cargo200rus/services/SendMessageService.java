@@ -54,9 +54,12 @@ public class SendMessageService {
                 equipmentLossesString = equipmentLosses.getEquipmentLosses(detailedReport);
                 textMessage = personnelLossesString + equipmentLossesString;
 
+//                textMessage = textMessage + "<i>Data sources:\n"
+//                        + "<a href=\"https://www.zsu.gov.ua/en\">Armed Forces of Ukraine</a>\n"
+//                        + "<a href=\"https://www.mil.gov.ua/en/\">Ministry of Defence of Ukraine</a></i>";
                 textMessage = textMessage + "<i>Data sources:\n"
-                        + "<a href=\"https://www.zsu.gov.ua/en\">Armed Forces of Ukraine</a>\n"
-                        + "<a href=\"https://www.mil.gov.ua/en/\">Ministry of Defence of Ukraine</a></i>";
+                        + "Armed Forces of Ukraine\n"
+                        + "Ministry of Defence of Ukraine</i>";
                 setAttributesAndCallSendMessage(message.getChatId(), markup, textMessage);
                 break;
 
