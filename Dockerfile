@@ -1,34 +1,13 @@
-# Use the official Maven image to build your Java application
-FROM maven:3.8.1-openjdk-11-slim AS build
+FROM eclipse-temurin:11-jdk-alpine as builder
+WORKDIR /opt/app
+COPY .mvn/ .mvn
+COPY mvnw pom.xml ./
+RUN ./mvnw dependency:go-offline
+COPY ./src ./src
+RUN ./mvnw clean install
 
-# Set the working directory in the container
-WORKDIR /app
-
-# Copy only the POM file to fetch dependencies (this can be optimized for caching)
-COPY pom.xml .
-
-COPY src/main/resources/application.properties /app/src/main/resources/
-
-# Fetch the application dependencies (this layer can be cached)
-RUN mvn dependency:go-offline
-
-# Copy the source code into the container
-COPY src ./src
-
-# Build Java application
-RUN mvn clean package
-
-# Use the official OpenJDK base image for Java
-FROM openjdk:11-jre-slim
-
-# Set the working directory in the container
-WORKDIR /app
-
-# Copy the built JAR file from the Maven build stage to the final image
-COPY --from=build /app/target/cargo200rus.jar .
-
-# Expose the port application listens on (replace 8080 with your actual port)
+FROM eclipse-temurin:11-jre-alpine
+WORKDIR /opt/app
+COPY --from=builder /opt/app/target/*.jar /opt/app/*.jar
 EXPOSE 8080
-
-# Define the command to run application
-CMD ["java", "-jar", "cargo200rus.jar"]
+ENTRYPOINT ["java", "-jar", "/opt/app/*.jar"]
