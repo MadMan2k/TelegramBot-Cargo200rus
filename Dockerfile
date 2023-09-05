@@ -23,10 +23,10 @@ FROM openjdk:11-jre-slim
 WORKDIR /app
 
 # Copy the built JAR file from the Maven build stage to the final image
-COPY --from=build /app/target/cargo200rus.jar .
+COPY --from=build /app/target/cargo200rus-0.0.1-SNAPSHOT.jar .
 
 # Expose the port application listens on (replace 8080 with your actual port)
 EXPOSE 8080
 
 # Define the command to run application
-CMD ["java", "-jar", "cargo200rus.jar"]
+CMD ["java", "-jar", "cargo200rus-0.0.1-SNAPSHOT.jar"]
