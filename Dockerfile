@@ -1,13 +1,14 @@
-FROM eclipse-temurin:11-jdk-alpine as builder
-WORKDIR /opt/app
-COPY .mvn/ .mvn
-COPY mvnw pom.xml ./
-RUN ./mvnw dependency:go-offline
-COPY ./src ./src
-RUN ./mvnw clean install
+# Use the official OpenJDK base image for Java 11
+FROM adoptopenjdk:11-jre-hotspot
 
-FROM eclipse-temurin:11-jre-alpine
-WORKDIR /opt/app
-COPY --from=builder /opt/app/target/*.jar /opt/app/*.jar
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy the compiled JAR file into the container
+COPY target/Cargo200rusApplication.jar /app/Cargo200rusApplication.jar
+
+# Expose the port your Telegram bot is listening on (if needed)
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "/opt/app/*.jar"]
+
+# Specify the command to run your application
+CMD ["java", "-jar", "Cargo200rusApplication.jar"]
