@@ -7,6 +7,8 @@ WORKDIR /app
 # Copy only the POM file to fetch dependencies (this can be optimized for caching)
 COPY pom.xml .
 
+COPY src/main/resources/application.properties /app/src/main/resources/
+
 # Fetch the application dependencies (this layer can be cached)
 RUN mvn dependency:go-offline
 
