@@ -58,7 +58,8 @@ public class EquipmentLosses {
                             - Integer.parseInt(parsedEquipment.get(parsedEquipment.size() - DAY_BEFORE)
                             .get(entry.getKey()).toString());
                 } catch (NullPointerException e) {
-                    System.out.println("NullPointerException for " + "'" + entry.getKey() + "'. " + " No data for Day-1 losses. Replaced by 0");
+                    System.out.println("NullPointerException for " + "'" + entry.getKey()
+                            + "'. " + " No data for Day-1 losses. Replaced by 0");
                 }
 
                 Locale ukraineLocale = new Locale("uk", "UA");
@@ -79,7 +80,8 @@ public class EquipmentLosses {
                                 - Integer.parseInt(parsedEquipment.get(parsedEquipment.size() - SEVEN_DAYS_BEFORE)
                                 .get(entry.getKey()).toString());
                     } catch (NullPointerException e) {
-                        System.out.println("NullPointerException for " + "'" + entry.getKey() + "'. " + " No data for Day-7 losses. Replaced by 0");
+                        System.out.println("NullPointerException for " + "'" + entry.getKey()
+                                + "'. " + " No data for Day-7 losses. Replaced by 0");
                     }
 
                     try {
@@ -87,7 +89,8 @@ public class EquipmentLosses {
                                 - Integer.parseInt(parsedEquipment.get(parsedEquipment.size() - THIRTY_DAYS_BEFORE)
                                 .get(entry.getKey()).toString());
                     } catch (NullPointerException e) {
-                        System.out.println("NullPointerException for " + "'" + entry.getKey() + "'. " + " No data for Day-30 losses. Replaced by 0");
+                        System.out.println("NullPointerException for " + "'" + entry.getKey()
+                                + "'. " + " No data for Day-30 losses. Replaced by 0");
                     }
 
                     String formattedSevenDaysArticleLosses = numberFormat.format(sevenDaysArticleLosses);

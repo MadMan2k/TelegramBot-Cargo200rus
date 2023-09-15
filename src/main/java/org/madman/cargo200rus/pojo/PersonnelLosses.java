@@ -93,8 +93,13 @@ public class PersonnelLosses {
 
         if (detailedReport) {
             personnelLosses.append("\n").append("+")
-                    .append(formattedYesterdayPersonnelLosses).append(" [1d]   +").append(formattedSevenDaysPersonnelLosses)
-                    .append(" [7d]   +").append(formattedThirtyDaysPersonnelLosses).append(" [30d]").append("\n").append("\n");
+                    .append(formattedYesterdayPersonnelLosses).append(" [1d]   +")
+                    .append(formattedSevenDaysPersonnelLosses)
+                    .append(" [7d]   +")
+                    .append(formattedThirtyDaysPersonnelLosses)
+                    .append(" [30d]")
+                    .append("\n")
+                    .append("\n");
         } else {
             if (yesterdayPersonnelLosses != 0) {
                 personnelLosses.append(" (+").append(formattedYesterdayPersonnelLosses).append(")").append("\n");
