@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.NumberFormat;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -60,10 +61,18 @@ public class EquipmentLosses {
                     System.out.println("NullPointerException for " + "'" + entry.getKey() + "'. " + " No data for Day-1 losses. Replaced by 0");
                 }
 
-                int sevenDaysArticleLosses = 0;
-                int thirtyDaysArticleLosses = 0;
+                Locale ukraineLocale = new Locale("uk", "UA");
+                NumberFormat numberFormat = NumberFormat.getNumberInstance(ukraineLocale);
+
+                String formattedTotalArticleLosses = numberFormat.format(totalArticleLosses);
+                String formattedYesterdayArticleLosses = numberFormat.format(yesterdayArticleLosses);
+
+                equipmentLosses.append(formattedTotalArticleLosses);
 
                 if (detailedReport) {
+
+                    int sevenDaysArticleLosses = 0;
+                    int thirtyDaysArticleLosses = 0;
 
                     try {
                         sevenDaysArticleLosses = totalArticleLosses
@@ -81,25 +90,20 @@ public class EquipmentLosses {
                         System.out.println("NullPointerException for " + "'" + entry.getKey() + "'. " + " No data for Day-30 losses. Replaced by 0");
                     }
 
+                    String formattedSevenDaysArticleLosses = numberFormat.format(sevenDaysArticleLosses);
+                    String formattedThirtyDaysArticleLosses = numberFormat.format(thirtyDaysArticleLosses);
 
-                }
-
-                equipmentLosses.append(totalArticleLosses);
-
-                if (detailedReport) {
                     equipmentLosses.append("\n")
-                            .append("+").append(yesterdayArticleLosses).append(" [1d]   +")
-                            .append(sevenDaysArticleLosses).append(" [7d]   +")
-                            .append(thirtyDaysArticleLosses).append(" [30d]").append("\n").append("\n");
+                            .append("+").append(formattedYesterdayArticleLosses).append(" [1d]   +")
+                            .append(formattedSevenDaysArticleLosses).append(" [7d]   +")
+                            .append(formattedThirtyDaysArticleLosses).append(" [30d]").append("\n").append("\n");
                 } else {
                     if (yesterdayArticleLosses != 0) {
-                        equipmentLosses.append(" (+").append(yesterdayArticleLosses).append(")").append("\n");
+                        equipmentLosses.append(" (+").append(formattedYesterdayArticleLosses).append(")").append("\n");
                     } else {
                         equipmentLosses.append("\n");
                     }
                 }
-
-
             }
         }
 

@@ -5,10 +5,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.net.URL;
 import java.text.DateFormat;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class PersonnelLosses {
@@ -74,20 +76,28 @@ public class PersonnelLosses {
                             .get(parsedPersonnel.size() - THIRTY_DAYS_BEFORE).get("personnel").toString());
         }
 
+        Locale ukraineLocale = new Locale("uk", "UA");
+        NumberFormat numberFormat = NumberFormat.getNumberInstance(ukraineLocale);
+
+        String formattedTotalPersonnelLosses = numberFormat.format(totalPersonnelLosses);
+        String formattedYesterdayPersonnelLosses = numberFormat.format(yesterdayPersonnelLosses);
+        String formattedSevenDaysPersonnelLosses = numberFormat.format(sevenDaysPersonnelLosses);
+        String formattedThirtyDaysPersonnelLosses = numberFormat.format(thirtyDaysPersonnelLosses);
+
 
         StringBuilder personnelLosses = new StringBuilder();
         personnelLosses.append("<b>").append("Date: ").append(dataDate).append("\n")
-                .append("Day of russian invasion of Ukraine: ").append(dayOfWar).append("\n").append("\n")
-                .append("Russian looses from 24/02/2022 :").append("\n").append("\n")
-                .append("Personnel: ").append("</b>").append(totalPersonnelLosses);
+                .append("Invasion day: ").append(dayOfWar).append("\n").append("\n")
+                .append("Russian losses from 24/02/2022 :").append("\n").append("\n")
+                .append("Personnel: ").append("</b>").append(formattedTotalPersonnelLosses);
 
         if (detailedReport) {
             personnelLosses.append("\n").append("+")
-                    .append(yesterdayPersonnelLosses).append(" [1d]   +").append(sevenDaysPersonnelLosses)
-                    .append(" [7d]   +").append(thirtyDaysPersonnelLosses).append(" [30d]").append("\n").append("\n");
+                    .append(formattedYesterdayPersonnelLosses).append(" [1d]   +").append(formattedSevenDaysPersonnelLosses)
+                    .append(" [7d]   +").append(formattedThirtyDaysPersonnelLosses).append(" [30d]").append("\n").append("\n");
         } else {
             if (yesterdayPersonnelLosses != 0) {
-                personnelLosses.append(" (+").append(yesterdayPersonnelLosses).append(")").append("\n");
+                personnelLosses.append(" (+").append(formattedYesterdayPersonnelLosses).append(")").append("\n");
             } else {
                 personnelLosses.append("\n");
             }

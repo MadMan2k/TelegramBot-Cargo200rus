@@ -21,7 +21,7 @@ import java.util.List;
 @Service
 public class SendMessageService {
 
-    private static final String IMAGE_PATH = "static.images/cargo200_info_1200x900.jpg";
+    private static final String IMAGE_PATH = "static.images/cargo200_info_1200x900.png";
 
     private final MessageSender messageSender;
 
