@@ -49,20 +49,39 @@ public class EquipmentLosses {
                 }
 
                 int totalArticleLosses = Integer.parseInt(entry.getValue().toString());
-                int yesterdayArticleLosses = totalArticleLosses
-                        - Integer.parseInt(parsedEquipment.get(parsedEquipment.size() - DAY_BEFORE)
-                        .get(entry.getKey()).toString());
+
+                int yesterdayArticleLosses = 0;
+
+                try {
+                    yesterdayArticleLosses = totalArticleLosses
+                            - Integer.parseInt(parsedEquipment.get(parsedEquipment.size() - DAY_BEFORE)
+                            .get(entry.getKey()).toString());
+                } catch (NullPointerException e) {
+                    System.out.println("NullPointerException for " + "'" + entry.getKey() + "'. " + " No data for Day-1 losses. Replaced by 0");
+                }
 
                 int sevenDaysArticleLosses = 0;
                 int thirtyDaysArticleLosses = 0;
 
                 if (detailedReport) {
-                    sevenDaysArticleLosses = totalArticleLosses
-                            - Integer.parseInt(parsedEquipment.get(parsedEquipment.size() - SEVEN_DAYS_BEFORE)
-                            .get(entry.getKey()).toString());
-                    thirtyDaysArticleLosses = totalArticleLosses
-                            - Integer.parseInt(parsedEquipment.get(parsedEquipment.size() - THIRTY_DAYS_BEFORE)
-                            .get(entry.getKey()).toString());
+
+                    try {
+                        sevenDaysArticleLosses = totalArticleLosses
+                                - Integer.parseInt(parsedEquipment.get(parsedEquipment.size() - SEVEN_DAYS_BEFORE)
+                                .get(entry.getKey()).toString());
+                    } catch (NullPointerException e) {
+                        System.out.println("NullPointerException for " + "'" + entry.getKey() + "'. " + " No data for Day-7 losses. Replaced by 0");
+                    }
+
+                    try {
+                        thirtyDaysArticleLosses = totalArticleLosses
+                                - Integer.parseInt(parsedEquipment.get(parsedEquipment.size() - THIRTY_DAYS_BEFORE)
+                                .get(entry.getKey()).toString());
+                    } catch (NullPointerException e) {
+                        System.out.println("NullPointerException for " + "'" + entry.getKey() + "'. " + " No data for Day-30 losses. Replaced by 0");
+                    }
+
+
                 }
 
                 equipmentLosses.append(totalArticleLosses);
