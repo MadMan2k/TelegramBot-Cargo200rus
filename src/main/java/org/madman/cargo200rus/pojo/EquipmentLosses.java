@@ -37,75 +37,38 @@ public class EquipmentLosses {
         Map<String, Object> totalEquipmentLosses = parsedEquipment.get(parsedEquipment.size() - 1);
 
         StringBuilder equipmentLosses = new StringBuilder();
+        Locale ukraineLocale = new Locale("uk", "UA");
+        NumberFormat numberFormat = NumberFormat.getNumberInstance(ukraineLocale);
 
         for (Map.Entry<String, Object> entry : totalEquipmentLosses.entrySet()) {
             if (entry.getValue() instanceof Integer && !entry.getKey().equals("day")) {
-                if (entry.getKey().equals("MRL")) {
-                    equipmentLosses.append("<b>Multiple rocket launcher:</b> ");
-                } else if (entry.getKey().equals("APC")) {
-                    equipmentLosses.append("<b>Armoured fighting vehicle:</b> ");
+
+                int totalArticleLosses = getTotalArticleLosses(entry.getValue());
+
+                appendTotalArticleLosses(equipmentLosses, totalArticleLosses, entry.getKey(), numberFormat);
+
+                int yesterdayArticleLosses = getYesterdayArticleLosses(totalArticleLosses, entry.getKey());
+
+                if (!detailedReport) {
+
+                    appendYesterdayArticleLossesForSimpleReport(equipmentLosses, yesterdayArticleLosses, numberFormat);
+
                 } else {
-                    equipmentLosses.append("<b>").append(entry.getKey().substring(0, 1).toUpperCase(Locale.ROOT)
-                            + entry.getKey().substring(1)).append(": ").append("</b>");
-                }
 
-                int totalArticleLosses = Integer.parseInt(entry.getValue().toString());
+                    equipmentLosses.append("\n");
 
-                int yesterdayArticleLosses = 0;
+                    appendYesterdayArticleLossesForDetailedReport(equipmentLosses, yesterdayArticleLosses, numberFormat);
 
-                try {
-                    yesterdayArticleLosses = totalArticleLosses
-                            - Integer.parseInt(parsedEquipment.get(parsedEquipment.size() - DAY_BEFORE)
-                            .get(entry.getKey()).toString());
-                } catch (NullPointerException e) {
-                    System.out.println("NullPointerException for " + "'" + entry.getKey()
-                            + "'. " + " No data for Day-1 losses. Replaced by 0");
-                }
+                    int sevenDaysArticleLosses = getSevenDaysArticleLosses(totalArticleLosses, entry.getKey());
 
-                Locale ukraineLocale = new Locale("uk", "UA");
-                NumberFormat numberFormat = NumberFormat.getNumberInstance(ukraineLocale);
+                    appendSevenDaysArticleLosses(equipmentLosses, sevenDaysArticleLosses, numberFormat);
 
-                String formattedTotalArticleLosses = numberFormat.format(totalArticleLosses);
-                String formattedYesterdayArticleLosses = numberFormat.format(yesterdayArticleLosses);
+                    int thirtyDaysArticleLosses = getThirtyDaysArticleLosses(totalArticleLosses, entry.getKey());
 
-                equipmentLosses.append(formattedTotalArticleLosses);
+                    appendThirtyDaysArticleLosses(equipmentLosses, thirtyDaysArticleLosses, numberFormat);
 
-                if (detailedReport) {
+                    equipmentLosses.append("\n").append("\n");
 
-                    int sevenDaysArticleLosses = 0;
-                    int thirtyDaysArticleLosses = 0;
-
-                    try {
-                        sevenDaysArticleLosses = totalArticleLosses
-                                - Integer.parseInt(parsedEquipment.get(parsedEquipment.size() - SEVEN_DAYS_BEFORE)
-                                .get(entry.getKey()).toString());
-                    } catch (NullPointerException e) {
-                        System.out.println("NullPointerException for " + "'" + entry.getKey()
-                                + "'. " + " No data for Day-7 losses. Replaced by 0");
-                    }
-
-                    try {
-                        thirtyDaysArticleLosses = totalArticleLosses
-                                - Integer.parseInt(parsedEquipment.get(parsedEquipment.size() - THIRTY_DAYS_BEFORE)
-                                .get(entry.getKey()).toString());
-                    } catch (NullPointerException e) {
-                        System.out.println("NullPointerException for " + "'" + entry.getKey()
-                                + "'. " + " No data for Day-30 losses. Replaced by 0");
-                    }
-
-                    String formattedSevenDaysArticleLosses = numberFormat.format(sevenDaysArticleLosses);
-                    String formattedThirtyDaysArticleLosses = numberFormat.format(thirtyDaysArticleLosses);
-
-                    equipmentLosses.append("\n")
-                            .append("+").append(formattedYesterdayArticleLosses).append(" [1d]   +")
-                            .append(formattedSevenDaysArticleLosses).append(" [7d]   +")
-                            .append(formattedThirtyDaysArticleLosses).append(" [30d]").append("\n").append("\n");
-                } else {
-                    if (yesterdayArticleLosses != 0) {
-                        equipmentLosses.append(" (+").append(formattedYesterdayArticleLosses).append(")").append("\n");
-                    } else {
-                        equipmentLosses.append("\n");
-                    }
                 }
             }
         }
@@ -114,6 +77,131 @@ public class EquipmentLosses {
 
         return equipmentLosses.toString();
 
+    }
+
+    private int getTotalArticleLosses(Object value) {
+        return Integer.parseInt(value.toString());
+    }
+
+    private void appendTotalArticleLosses(StringBuilder equipmentLosses, int totalArticleLosses, String articleName, NumberFormat numberFormat) {
+        if (articleName.equals("MRL")) {
+            equipmentLosses.append("<b>Multiple rocket launcher:</b> ");
+        } else if (articleName.equals("APC")) {
+            equipmentLosses.append("<b>Armoured fighting vehicle:</b> ");
+        } else {
+            equipmentLosses.append("<b>").append(articleName.substring(0, 1).toUpperCase(Locale.ROOT)
+                    + articleName.substring(1)).append(": ").append("</b>");
+        }
+
+        String formattedTotalArticleLosses = numberFormat.format(totalArticleLosses);
+        equipmentLosses.append(formattedTotalArticleLosses);
+    }
+
+    private int getYesterdayArticleLosses(int totalArticleLosses, String articleName) {
+        int yesterdayArticleLosses;
+
+        try {
+            yesterdayArticleLosses = totalArticleLosses
+                    - Integer.parseInt(parsedEquipment.get(parsedEquipment.size() - DAY_BEFORE)
+                    .get(articleName).toString());
+        } catch (NullPointerException e) {
+            yesterdayArticleLosses = -1;
+            System.out.println("NullPointerException for " + "'" + articleName
+                    + "'. " + " No data for Day-1 losses. Replaced by 0");
+        }
+
+        return yesterdayArticleLosses;
+    }
+
+    private void appendYesterdayArticleLossesForSimpleReport(StringBuilder equipmentLosses, int yesterdayArticleLosses, NumberFormat numberFormat) {
+        String formattedYesterdayArticleLosses;
+
+        switch (yesterdayArticleLosses) {
+            case -1:
+                formattedYesterdayArticleLosses = "no data";
+                equipmentLosses.append(" (").append(formattedYesterdayArticleLosses).append(")").append("\n");
+                break;
+            case 0:
+                equipmentLosses.append("\n");
+                break;
+            default:
+                formattedYesterdayArticleLosses = numberFormat.format(yesterdayArticleLosses);
+                equipmentLosses.append(" (+").append(formattedYesterdayArticleLosses).append(")").append("\n");
+        }
+    }
+
+    private void appendYesterdayArticleLossesForDetailedReport(StringBuilder equipmentLosses, int yesterdayArticleLosses, NumberFormat numberFormat) {
+        String formattedYesterdayArticleLosses;
+
+        switch (yesterdayArticleLosses) {
+            case -1:
+                formattedYesterdayArticleLosses = "no data";
+                equipmentLosses.append(" ").append(formattedYesterdayArticleLosses).append(" [1d]");
+                break;
+            default:
+                formattedYesterdayArticleLosses = numberFormat.format(yesterdayArticleLosses);
+                equipmentLosses.append(" +").append(formattedYesterdayArticleLosses).append(" [1d]");
+        }
+    }
+
+    private int getSevenDaysArticleLosses(int totalArticleLosses, String articleName) {
+        int sevenDaysArticleLosses;
+
+        try {
+            sevenDaysArticleLosses = totalArticleLosses
+                    - Integer.parseInt(parsedEquipment.get(parsedEquipment.size() - SEVEN_DAYS_BEFORE)
+                    .get(articleName).toString());
+        } catch (NullPointerException e) {
+            sevenDaysArticleLosses = -1;
+            System.out.println("NullPointerException for " + "'" + articleName
+                    + "'. " + " No data for Day-7 losses. Replaced by 0");
+        }
+
+        return sevenDaysArticleLosses;
+    }
+
+    private void appendSevenDaysArticleLosses(StringBuilder equipmentLosses, int sevenDaysArticleLosses, NumberFormat numberFormat) {
+        String formattedSevenDaysArticleLosses;
+
+        switch (sevenDaysArticleLosses) {
+            case -1:
+                formattedSevenDaysArticleLosses = "no data";
+                equipmentLosses.append("    ").append(formattedSevenDaysArticleLosses).append(" [7d]");
+                break;
+            default:
+                formattedSevenDaysArticleLosses = numberFormat.format(sevenDaysArticleLosses);
+                equipmentLosses.append("   +").append(formattedSevenDaysArticleLosses).append(" [7d]");
+        }
+    }
+
+    private int getThirtyDaysArticleLosses(int totalArticleLosses, String articleName) {
+        int thirtyDaysArticleLosses;
+
+        try {
+            thirtyDaysArticleLosses = totalArticleLosses
+                    - Integer.parseInt(parsedEquipment.get(parsedEquipment.size() - THIRTY_DAYS_BEFORE)
+                    .get(articleName).toString());
+        } catch (NullPointerException e) {
+            thirtyDaysArticleLosses = -1;
+            System.out.println("NullPointerException for " + "'" + articleName
+                    + "'. " + " No data for Day-30 losses. Replaced by 0");
+        }
+
+        return thirtyDaysArticleLosses;
+    }
+
+    private void appendThirtyDaysArticleLosses(StringBuilder equipmentLosses, int thirtyDaysArticleLosses, NumberFormat numberFormat) {
+        String formattedSevenDaysArticleLosses;
+
+        switch (thirtyDaysArticleLosses) {
+            case -1:
+                formattedSevenDaysArticleLosses = "no data";
+                equipmentLosses.append("    ").append(formattedSevenDaysArticleLosses).append(" [30d]");
+                break;
+            default:
+                formattedSevenDaysArticleLosses = numberFormat.format(thirtyDaysArticleLosses);
+                equipmentLosses.append("   +").append(formattedSevenDaysArticleLosses).append(" [30d]");
+        }
     }
 
 }
