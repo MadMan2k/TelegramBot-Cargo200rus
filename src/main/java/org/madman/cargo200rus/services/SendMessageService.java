@@ -75,7 +75,7 @@ public class SendMessageService {
                 break;
 
             default:
-                textMessage = "Please tap one of the button below to choose simple or detailed report";
+                textMessage = "Please tap one of the buttons below to choose a simple or detailed report";
                 setAttributesAndCallSendMessage(message.getChatId(), markup, textMessage);
                 break;
         }
