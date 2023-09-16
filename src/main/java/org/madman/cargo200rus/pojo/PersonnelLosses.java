@@ -8,6 +8,9 @@ import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -32,6 +35,11 @@ public class PersonnelLosses {
         }
     }
 
+    private String getTodayDate() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        return dateFormat.format(new Date());
+    }
+
     private String getDataDate() {
         Date dataDate = new Date();
         try {
@@ -45,7 +53,19 @@ public class PersonnelLosses {
     }
 
     private int getDayOfWar() {
-        return Integer.parseInt(parsedPersonnel.get(parsedPersonnel.size() - 1).get("day").toString());
+        Date startOfInvasion;
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        try {
+            startOfInvasion = dateFormat.parse("24/02/2022");
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+        LocalDate localStartDate = startOfInvasion.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate currentDate = LocalDate.now();
+        Duration duration = Duration.between(localStartDate.atStartOfDay(), currentDate.atStartOfDay());
+        return (int)duration.toDays() + 1;
+
+
     }
 
     /**
@@ -54,6 +74,7 @@ public class PersonnelLosses {
      */
     public String getPersonnelLosses(boolean detailedReport) {
         parsePersonnel();
+        String todayDate = getTodayDate();
         String dataDate = getDataDate();
         int dayOfWar = getDayOfWar();
 
@@ -86,9 +107,10 @@ public class PersonnelLosses {
 
 
         StringBuilder personnelLosses = new StringBuilder();
-        personnelLosses.append("<b>").append("Date: ").append(dataDate).append("\n")
+        personnelLosses.append("<b>").append("Date: ").append(todayDate).append("\n")
                 .append("Invasion day: ").append(dayOfWar).append("\n").append("\n")
-                .append("Russian losses from 24/02/2022 :").append("\n").append("\n")
+                .append("Russian losses").append("\n").append("(24/02/2022 - ").append(dataDate).append(") :")
+                .append("\n").append("\n")
                 .append("Personnel: ").append("</b>").append(formattedTotalPersonnelLosses);
 
         if (detailedReport) {
@@ -109,4 +131,5 @@ public class PersonnelLosses {
         }
         return personnelLosses.toString();
     }
+
 }
