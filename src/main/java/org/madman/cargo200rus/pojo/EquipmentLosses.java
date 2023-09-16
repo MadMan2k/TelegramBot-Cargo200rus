@@ -111,7 +111,7 @@ public class EquipmentLosses {
         } catch (NullPointerException e) {
             yesterdayArticleLosses = -1;
             System.out.println("NullPointerException for " + "'" + articleName
-                    + "'. " + " No data for Day-1 losses. Replaced by 0");
+                    + "'. " + " No data for Day-1 losses");
         }
 
         return yesterdayArticleLosses;
@@ -162,7 +162,7 @@ public class EquipmentLosses {
         } catch (NullPointerException e) {
             sevenDaysArticleLosses = -1;
             System.out.println("NullPointerException for " + "'" + articleName
-                    + "'. " + " No data for Day-7 losses. Replaced by 0");
+                    + "'. " + " No data for Day-7 losses");
         }
 
         return sevenDaysArticleLosses;
@@ -194,7 +194,7 @@ public class EquipmentLosses {
         } catch (NullPointerException e) {
             thirtyDaysArticleLosses = -1;
             System.out.println("NullPointerException for " + "'" + articleName
-                    + "'. " + " No data for Day-30 losses. Replaced by 0");
+                    + "'. " + " No data for Day-30 losses");
         }
 
         return thirtyDaysArticleLosses;
