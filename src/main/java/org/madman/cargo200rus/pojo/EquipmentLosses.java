@@ -57,7 +57,8 @@ public class EquipmentLosses {
 
                     equipmentLosses.append("\n");
 
-                    appendYesterdayArticleLossesForDetailedReport(equipmentLosses, yesterdayArticleLosses, numberFormat);
+                    appendYesterdayArticleLossesForDetailedReport(
+                            equipmentLosses, yesterdayArticleLosses, numberFormat);
 
                     int sevenDaysArticleLosses = getSevenDaysArticleLosses(totalArticleLosses, entry.getKey());
 
@@ -83,7 +84,10 @@ public class EquipmentLosses {
         return Integer.parseInt(value.toString());
     }
 
-    private void appendTotalArticleLosses(StringBuilder equipmentLosses, int totalArticleLosses, String articleName, NumberFormat numberFormat) {
+    private void appendTotalArticleLosses(StringBuilder equipmentLosses,
+                                          int totalArticleLosses,
+                                          String articleName,
+                                          NumberFormat numberFormat) {
         if (articleName.equals("MRL")) {
             equipmentLosses.append("<b>Multiple rocket launcher:</b> ");
         } else if (articleName.equals("APC")) {
@@ -113,7 +117,9 @@ public class EquipmentLosses {
         return yesterdayArticleLosses;
     }
 
-    private void appendYesterdayArticleLossesForSimpleReport(StringBuilder equipmentLosses, int yesterdayArticleLosses, NumberFormat numberFormat) {
+    private void appendYesterdayArticleLossesForSimpleReport(StringBuilder equipmentLosses,
+                                                             int yesterdayArticleLosses,
+                                                             NumberFormat numberFormat) {
         String formattedYesterdayArticleLosses;
 
         switch (yesterdayArticleLosses) {
@@ -130,7 +136,9 @@ public class EquipmentLosses {
         }
     }
 
-    private void appendYesterdayArticleLossesForDetailedReport(StringBuilder equipmentLosses, int yesterdayArticleLosses, NumberFormat numberFormat) {
+    private void appendYesterdayArticleLossesForDetailedReport(StringBuilder equipmentLosses,
+                                                               int yesterdayArticleLosses,
+                                                               NumberFormat numberFormat) {
         String formattedYesterdayArticleLosses;
 
         switch (yesterdayArticleLosses) {
@@ -160,7 +168,9 @@ public class EquipmentLosses {
         return sevenDaysArticleLosses;
     }
 
-    private void appendSevenDaysArticleLosses(StringBuilder equipmentLosses, int sevenDaysArticleLosses, NumberFormat numberFormat) {
+    private void appendSevenDaysArticleLosses(StringBuilder equipmentLosses,
+                                              int sevenDaysArticleLosses,
+                                              NumberFormat numberFormat) {
         String formattedSevenDaysArticleLosses;
 
         switch (sevenDaysArticleLosses) {
@@ -190,7 +200,9 @@ public class EquipmentLosses {
         return thirtyDaysArticleLosses;
     }
 
-    private void appendThirtyDaysArticleLosses(StringBuilder equipmentLosses, int thirtyDaysArticleLosses, NumberFormat numberFormat) {
+    private void appendThirtyDaysArticleLosses(StringBuilder equipmentLosses,
+                                               int thirtyDaysArticleLosses,
+                                               NumberFormat numberFormat) {
         String formattedSevenDaysArticleLosses;
 
         switch (thirtyDaysArticleLosses) {
